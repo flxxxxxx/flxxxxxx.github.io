@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>我的技术与生活——Zookeeper | Hexo</title>
+  <title>我的技术与生活——kafka | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/imgs/shortcut-icon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/css/public.css" />
@@ -16,7 +16,7 @@
 
   <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
   <script>
-    document.title = `我的技术与生活——Zookeeper`
+    document.title = `我的技术与生活——kafka`
   </script>
 <meta name="generator" content="Hexo 6.3.0"></head>
 
@@ -371,7 +371,7 @@ pre:active {
 
 <div class="article-container">
   <div class="article">
-    <h1 class="article-title">Zookeeper</h1>
+    <h1 class="article-title">kafka</h1>
     <div class="article-info">
       <div class="article-info--item">
         <div class="article-info--info">
@@ -387,35 +387,195 @@ pre:active {
             
           </div>
           
-          <p class="article-info--date">日期：2023-06-18 20:37:09</p>
+          <p class="article-info--date">日期：2023-06-20 15:35:31</p>
         </div>
         <img src="/imgs/default-cover.webp" alt="" class="article-cover">
       </div>
     </div>
     <article class="article-content">
-      <h1 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h1><h2 id="（1）安装前需要安装好jdk"><a href="#（1）安装前需要安装好jdk" class="headerlink" title="（1）安装前需要安装好jdk"></a>（1）安装前需要安装好jdk</h2><p><img src="/../lj/1.png"></p>
-<h2 id="（2）检测集群时间是否同步"><a href="#（2）检测集群时间是否同步" class="headerlink" title="（2）检测集群时间是否同步"></a>（2）检测集群时间是否同步</h2><p><img src="/../lj/2.png"></p>
-<h2 id="（3）检测防火墙是否关闭"><a href="#（3）检测防火墙是否关闭" class="headerlink" title="（3）检测防火墙是否关闭"></a>（3）检测防火墙是否关闭</h2><p><img src="/../lj/3.png"></p>
-<h2 id="（4）检测主机ip映射有没有配置"><a href="#（4）检测主机ip映射有没有配置" class="headerlink" title="（4）检测主机ip映射有没有配置"></a>（4）检测主机ip映射有没有配置</h2><h1 id="2-解压"><a href="#2-解压" class="headerlink" title="2.解压"></a>2.解压</h1><h2 id="（1）将zookeeper安装包放到-x2F-export-x2F-software路径下，解压到-x2F-export-x2F-server"><a href="#（1）将zookeeper安装包放到-x2F-export-x2F-software路径下，解压到-x2F-export-x2F-server" class="headerlink" title="（1）将zookeeper安装包放到&#x2F;export&#x2F;software路径下，解压到&#x2F;export&#x2F;server"></a>（1）将zookeeper安装包放到&#x2F;export&#x2F;software路径下，解压到&#x2F;export&#x2F;server</h2><p>cd &#x2F;export&#x2F;software<br>tar -zxvf apache-zookeeper-3.7.0.tar.gz -C &#x2F;export&#x2F;server&#x2F;<br><img src="/../lj/4.png"><br>解压后，&#x2F;export&#x2F;server路径下将出现apache-zookeeper-3.7.0-bin这个文件夹<br><img src="/../lj/5.png"></p>
-<h2 id="（2）创建软链接"><a href="#（2）创建软链接" class="headerlink" title="（2）创建软链接"></a>（2）创建软链接</h2><p>ln -s &#x2F;export&#x2F;server&#x2F;apache-zookeeper-3.7.0-bin&#x2F; &#x2F;export&#x2F;server&#x2F;zookeeper<br><img src="/../lj/6.png"></p>
-<h1 id="3-修改环境变量（三台都需要改）"><a href="#3-修改环境变量（三台都需要改）" class="headerlink" title="3.修改环境变量（三台都需要改）"></a>3.修改环境变量（三台都需要改）</h1><p>vi &#x2F;etc&#x2F;profile<br>export ZOOKEEPER_HOME&#x3D;&#x2F;export&#x2F;server&#x2F;zookeeper<br>export PATH&#x3D;$PATH:$ZOOKEEPER_HOME&#x2F;bin<br><img src="/../lj/7.png"><br>修改后source &#x2F;etc&#x2F;profile，重新加载配置文件。</p>
-<h1 id="4-修改zookeeper配置文件"><a href="#4-修改zookeeper配置文件" class="headerlink" title="4.修改zookeeper配置文件"></a>4.修改zookeeper配置文件</h1><p>cd &#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;conf&#x2F;</p>
-<h2 id="（1）复制文件zoo-sample-cfg并将文件名修改为zoo-cfg"><a href="#（1）复制文件zoo-sample-cfg并将文件名修改为zoo-cfg" class="headerlink" title="（1）复制文件zoo_sample.cfg并将文件名修改为zoo.cfg"></a>（1）复制文件zoo_sample.cfg并将文件名修改为zoo.cfg</h2><p>cp zoo_sample.cfg zoo.cfg<br><img src="/../lj/8.png"></p>
-<h2 id="（2）创建zookeeper数据存放目录"><a href="#（2）创建zookeeper数据存放目录" class="headerlink" title="（2）创建zookeeper数据存放目录"></a>（2）创建zookeeper数据存放目录</h2><p>mkdir -p &#x2F;export&#x2F;data&#x2F;zookeeper&#x2F;zkdatas&#x2F;<br><img src="/../lj/9.png"></p>
-<h2 id="（3）修改文件zoo-cfg内容"><a href="#（3）修改文件zoo-cfg内容" class="headerlink" title="（3）修改文件zoo.cfg内容"></a>（3）修改文件zoo.cfg内容</h2><p>vim zoo.cfg<br>#Zookeeper的数据存放目录<br>dataDir &#x3D; &#x2F;export&#x2F;data&#x2F;zookeeper&#x2F;zkdatas&#x2F;<br>#保留多少个快照<br>autopurge.snapRetainCount &#x3D; 3<br>#日志多少小时清理一次<br>autopurge.purgeInterval &#x3D; 1<br>#集群中服务器地址<br>server.1 &#x3D; node1:2888:3888<br>server.2 &#x3D; node2:2888:3888<br>server.3 &#x3D; node3:2888:3888<br><img src="/../lj/10.png"></p>
-<h1 id="5-添加myid配置"><a href="#5-添加myid配置" class="headerlink" title="5.添加myid配置"></a>5.添加myid配置</h1><p>在node1主机的&#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;zkdatas&#x2F;这个路径下创建一个文件，文件名为myid ,文件内容为1<br>echo 1 &gt; &#x2F;export&#x2F;data&#x2F;zookeeper&#x2F;zkdatas&#x2F;myid<br><img src="/../lj/11.png"></p>
-<h1 id="6-给node2、node3分发安装包并修改myid的值"><a href="#6-给node2、node3分发安装包并修改myid的值" class="headerlink" title="6.给node2、node3分发安装包并修改myid的值"></a>6.给node2、node3分发安装包并修改myid的值</h1><h2 id="（1）在node1上，将安装包分发到其他机器"><a href="#（1）在node1上，将安装包分发到其他机器" class="headerlink" title="（1）在node1上，将安装包分发到其他机器"></a>（1）在node1上，将安装包分发到其他机器</h2><p>在node1上面执行以下两个命令<br>cd &#x2F;export&#x2F;server&#x2F;<br>scp -r &#x2F;export&#x2F;server&#x2F;apache-zookeeper-3.7.0-bin&#x2F; root@node2:&#x2F;export&#x2F;server&#x2F;<br><img src="/../lj/12.png"><br>scp -r &#x2F;export&#x2F;server&#x2F;apache-zookeeper-3.7.0-bin&#x2F; root@node3:&#x2F;export&#x2F;server&#x2F;<br><img src="/../lj/13.png"></p>
-<h2 id="（2）在node2上建立软连接-并修改myid的值为2"><a href="#（2）在node2上建立软连接-并修改myid的值为2" class="headerlink" title="（2）在node2上建立软连接, 并修改myid的值为2"></a>（2）在node2上建立软连接, 并修改myid的值为2</h2><p>cd &#x2F;export&#x2F;server&#x2F;<br>ln -s &#x2F;export&#x2F;server&#x2F;zookeeper-3.7.0&#x2F; &#x2F;export&#x2F;server&#x2F;zookeeper<br><img src="/../lj/14.png"><br>echo 2 &gt; &#x2F;export&#x2F;data&#x2F;zookeeper&#x2F;zkdatas&#x2F;myid<br><img src="/../lj/15.png"></p>
-<h2 id="（3）在node3上建立软连接-并修改myid的值为3"><a href="#（3）在node3上建立软连接-并修改myid的值为3" class="headerlink" title="（3）在node3上建立软连接, 并修改myid的值为3"></a>（3）在node3上建立软连接, 并修改myid的值为3</h2><p>cd &#x2F;export&#x2F;server&#x2F;<br>ln -s &#x2F;export&#x2F;server&#x2F;zookeeper-3.7.0&#x2F; &#x2F;export&#x2F;server&#x2F;zookeeper<br><img src="/../lj/16.png"><br>echo 3 &gt; &#x2F;export&#x2F;data&#x2F;zookeeper&#x2F;zkdatas&#x2F;myid<br><img src="/../lj/17.png"></p>
-<h1 id="7-三台机器启动zookeeper服务"><a href="#7-三台机器启动zookeeper服务" class="headerlink" title="7. 三台机器启动zookeeper服务"></a>7. 三台机器启动zookeeper服务</h1><h2 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h2><p>三台机器分别启动zookeeper服务,这个命令三台机器都要执行<br>&#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;bin&#x2F;zkServer.sh start<br>三台主机分别查看启动状态<br>&#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;bin&#x2F;zkServer.sh status<br>node1:<br><img src="/../lj/18.png"><br><img src="/../lj/19.png"><br>node2:<br><img src="/../lj/20.png"><br><img src="/../lj/21.png"><br>node3:<br><img src="/../lj/22.png"><br><img src="/../lj/23.png"></p>
-<h2 id="方法2："><a href="#方法2：" class="headerlink" title="方法2："></a>方法2：</h2><p>编写一个shell脚本来批量启动所有机器<br>mkdir &#x2F;export&#x2F;shell<br>vim zkall.sh<br>#!&#x2F;bin&#x2F;bash</p>
-<p>case $1 in<br>“start”){<br>    for i in node1 node2 node3<br>    do<br>        echo ———- zookeeper $i 启动 ————<br>        ssh $i “&#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;bin&#x2F;zkServer.sh start”<br>    done<br>};;<br>“stop”){<br>    for i in node1 node2 node3<br>    do<br>        echo ———- zookeeper $i 停止 ————<br>        ssh $i “&#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;bin&#x2F;zkServer.sh stop”<br>    done<br>};;<br>“status”){<br>    for i in node1 node2 node3<br>    do<br>        echo ———- zookeeper $i 状态 ————<br>        ssh $i “&#x2F;export&#x2F;server&#x2F;zookeeper&#x2F;bin&#x2F;zkServer.sh status”<br>    done<br>};;<br>Esac<br><img src="/../lj/24.png"><br>配置zk脚本环境变量<br>vi &#x2F;etc&#x2F;profile<br>#ZOOKEEPER_SHELL_HOME<br>export ZKS_HOME&#x3D;&#x2F;export&#x2F;shell&#x2F;<br>export PATH&#x3D;$PATH:$ZKS_HOME<br><img src="/../lj/25.png"><br>修改后，source &#x2F;etc&#x2F;profile使环境变量生效<br>启动测试<br>chmod 777 &#x2F;export&#x2F;shell&#x2F;zkall.sh<br>zkall.sh start<br><img src="/../lj/26.png"><br>查看状态<br>zkall.sh status<br><img src="/../lj/27.png"><br>注：这个方法有可能会不成功，在查看状态时报错，只需在根目录下的.bashrc文件中，将所有的环境变量填入，即可解决这个问题（三台机器的.bashrc中都需填入）<br><img src="/../lj/28.png"><br>填入后要source .bashrc。</p>
+      <h1 id="安装Kafka集群"><a href="#安装Kafka集群" class="headerlink" title="安装Kafka集群"></a>安装Kafka集群</h1><p>1.上传安装包至&#x2F;export&#x2F;server路径下，并解压：</p>
+<p>cd  &#x2F;export&#x2F;server&#x2F; </p>
+<p>tar -zxvf kafka_2.12-2.4.1.tgz</p>
+<p><img src="/../kafka/wps1.jpg" alt="img"></p>
+<p>2.修改配置文件</p>
+<p>（1）进入配置文件目录</p>
+<p>cd &#x2F;export&#x2F;server&#x2F;kafka_2.12-2.4.1&#x2F;config</p>
+<p>(2)编辑配置文件</p>
+<p>vi server.properties</p>
+<p>为依次增长的:0、1、2、3、4,集群中唯一 id –》从0开始，每台不能重复，第一块要改的</p>
+<p>broker.id&#x3D;0 </p>
+<p>—-Logbasic——</p>
+<p>数据存储的目录，第二块要改的</p>
+<p>log.dirs&#x3D;&#x2F;export&#x2F;data&#x2F;kafka-logs  </p>
+<p>—zookeeper—-</p>
+<p>指定 zk 集群地址，第四块要改的</p>
+<p>zookeeper.connect&#x3D;node1:2181,node2:2181,node3:2181</p>
+<p><img src="/../kafka/wps2.jpg" alt="img"></p>
+<p><img src="/../kafka/wps3.jpg" alt="img"></p>
+<p><img src="/../kafka/wps4.jpg" alt="img"></p>
+<p>3.将配置好的kafka分发至node1和node2：</p>
+<p>scp -r &#x2F;export&#x2F;server&#x2F;kafka_2.12-2.4.1 root@node2:&#x2F;export&#x2F;server&#x2F;</p>
+<p>scp -r &#x2F;export&#x2F;server&#x2F;kafka_2.12-2.4.1 root@node3:&#x2F;export&#x2F;server&#x2F;</p>
+<p>4.配置环境变量</p>
+<p><img src="/../kafka/wps5.jpg" alt="img"></p>
+<p>5.在node2.node3上修改server.propertie中的brokeer编号：</p>
+<p>vim &#x2F;export&#x2F;server&#x2F;kafka&#x2F;config&#x2F;server.propertie</p>
+<p>broker.id&#x3D;1 </p>
+<p>broker.id&#x3D;2</p>
+<p>(broker.id 不能重复)</p>
+<p>6.创建kafka一键启停脚本：</p>
+<p>!&#x2F;bin&#x2F;bash</p>
+<p>if [ $# -eq 0 ]</p>
+<p>then</p>
+<p>echo “please input param:start stop”</p>
+<p>else</p>
+<p>if [ $1 &#x3D; start  ]</p>
+<p>then</p>
+<p>for i in {1..3}</p>
+<p>do</p>
+<p>echo “${1}ing node${i}”</p>
+<p>ssh node${i} “source &#x2F;etc&#x2F;profile;&#x2F;export&#x2F;server&#x2F;kafka&#x2F;bin&#x2F;kafka-server-start.sh -daemon &#x2F;export&#x2F;server&#x2F;kafka&#x2F;config&#x2F;server.properties”</p>
+<p>done</p>
+<p>fi</p>
+<p>if [ $1 &#x3D; stop ]</p>
+<p>then</p>
+<p>for i in {1..3}</p>
+<p>do</p>
+<p>ssh node${i} “source &#x2F;etc&#x2F;profile;&#x2F;export&#x2F;server&#x2F;kafka&#x2F;bin&#x2F;kafka-server-stop.sh”</p>
+<p>done</p>
+<p>fi</p>
+<p>fi</p>
+<p><img src="/../kafka/wps6.jpg" alt="img"></p>
+<h1 id="Kafka命令行操作"><a href="#Kafka命令行操作" class="headerlink" title="Kafka命令行操作"></a>Kafka命令行操作</h1><p><strong>（1）创建topic</strong>：创建一个topic（主题）。Kafka中所有的消息都是保存在主题中，要生产消息到Kafka，首先必须要有一个确定的主题。</p>
+<p>基本方式：.&#x2F;kafka-topics.sh –create –topic tpc_1 –partitions 2 –replication-factor 2 –zookeeper node1:2181</p>
+<p>–replication-factor 副本数量</p>
+<p>–partitions 分区数量</p>
+<p>–topic topic 名称</p>
+<p><img src="/../kafka/wps7.jpg" alt="img"></p>
+<p><strong>（2）删除topic：</strong>bin&#x2F;kafka-topics.sh  –delete –topic tpc_1 –zookeeper node1：2181</p>
+<p>（异步线程去删除）删除 topic,需要一个参数处于启用状态: delete.topic.enable &#x3D; true,否则删不掉</p>
+<p>使用 kafka-topics.sh 脚本删除主题的行为本质上只是在 ZooKeeper 中的 &#x2F;admin&#x2F;delete_topics 路径下 建一个与待删除主题同名的节点,以标记该主题为待删除的状态。与创建主题相同的是,真正删除主题的动作也是由 Kafka 的控制器负责完成的。</p>
+<p><strong>（3）查看topic：</strong></p>
+<p>列出当前系统中的所有 topic ：</p>
+<p>bin&#x2F;kafka-topics.sh –zookeeper node1:2181,node2:2181,node3:2181 -list</p>
+<p><img src="/../kafka/wps8.jpg" alt="img"></p>
+<p>查看 topic 详细信息：bin&#x2F;kafka-topics.sh –describe –topic tpc_1 –zookeper node1:2181 </p>
+<p><img src="/../kafka/wps9.jpg" alt="img"></p>
+<p><strong>（4）增加分区数：</strong>bin&#x2F;kafka-topics.sh –alter –topic tpc_1 –partitions 3 –zookeeper node1:2181</p>
+<p><strong>（5）****动态配置topic参数</strong>：添加、修改配置参数(开启压缩发送传输种提高kafka消息吞吐量的有效办法(‘gzip’, ‘snappy’, ‘lz4’, ‘zstd’))</p>
+<p>bin&#x2F;kafka-configs.sh –zookeeper node1:2181 –entity-type topics –entity-name tpc_1 –alter –add-config compression.type&#x3D;gzip </p>
+<p><img src="/../kafka/wps10.jpg" alt="img"></p>
+<p>删除配置参数</p>
+<p>bin&#x2F;kafka-configs.sh –zookeeper node1:2181 –entity-type topics –entity-name tpc_1 –alter –delete-config compression.type</p>
+<p><img src="/../kafka/wps11.jpg" alt="img"></p>
+<p><strong>（6）生产消息到Kafka进行消费：</strong>使用Kafka内置的测试程序，生产一些消息到Kafka的tpc_1主题中</p>
+<p>bin&#x2F;kafka-console-producer.sh –broker-list node1:9092, node2:9092, node3:9092 –topic tpc_1</p>
+<p>&gt;lu han</p>
+<p>&gt;luo yun xi</p>
+<p>&gt;kafka</p>
+<p>消费消息(从头开始)</p>
+<p>bin&#x2F;kafka-console-consumer.sh –bootstrap-server node1:9092, node2:9092, node1:9092 –topic tpc_1 –from-beginning</p>
+<p>指定要消费的分区,和要消费的起始 offset </p>
+<p>bin&#x2F;kafka-console-consumer.sh –bootstrap-server node1:9092,node2:9092,node3:9092 –topic tcp_1 –offset 2 –partition 0</p>
+<p><img src="/../kafka/wps12.jpg" alt="img"></p>
+<p><img src="/../kafka/wps13.jpg" alt="img"></p>
+<p><img src="/../kafka/wps14.jpg" alt="img"></p>
+<p><strong>（7）Kafka的生产者&#x2F;消费者&#x2F;工具</strong></p>
+<p>推荐大家开发的使用Kafka tool：</p>
+<p>浏览Kafka集群节点、多少个topic、多少个分区</p>
+<p>创建topic&#x2F;删除topic</p>
+<p>浏览zookeeper中的数据</p>
+<p>1、右键点击创建新的链接：</p>
+<p><img src="/../kafka/wps15.jpg" alt="img"></p>
+<p>2、填写Kafka的集群名称、选择Kafka的版本为2.4并输入zookeeper的开机地址：</p>
+<p><img src="/../kafka/wps16.jpg" alt="img"></p>
+<p>点击test按钮产看是否能够连接成功，能连接成功点击add按钮添加Kafka集群：</p>
+<p><img src="/../kafka/wps17.jpg" alt="img"></p>
+<p>3、点击创建topic，输入topic的名称，默认分区和副本的数量为1</p>
+<p><img src="/../kafka/wps18.jpg" alt="img"></p>
+<p><img src="/../kafka/wps19.jpg" alt="img"></p>
+<p>4、查看Kafka分区中的数据：</p>
+<p><img src="/../kafka/wps20.jpg" alt="img"></p>
+<p><strong>（8）Kafka的基准测试</strong></p>
+<p>基准<a target="_blank" rel="noopener" href="http://www.blogjava.net/qileilove/archive/2012/07/05/382241.html">测试</a>是一种测量和评估软件性能指标的活动。我们可以通过基准测试，了解到软件、硬件的性能水平。主要测试负载的执行时间、传输速度、吞吐量、资源占用率等。</p>
+<p>Kafka中提供了内置的性能测试工具：</p>
+<p>生产者：测试生产每秒传输的数据量（多少条数据、多少M的数据）</p>
+<p>消费者：测试消费每条拉取的数据量</p>
+<p>以下进行测试：</p>
+<p>kafka-producer-perf-test.sh –topic tpc_1 –num-records 100000 –record-size 1024 –throughput -1 –producer-props bootstrap.servers&#x3D;node1:9092 acks&#x3D;1</p>
+<p><img src="/../kafka/wps21.jpg" alt="img"></p>
+<p>kafka-producer-perf-test.sh –topic tpc_3 –num-records 100000 –record-size 1024 –throughput -1 –producer-props bootstrap.servers&#x3D;node1:9092 acks&#x3D;1</p>
+<p><img src="/../kafka/wps22.jpg" alt="img"></p>
+<p>kafka-producer-perf-test.sh –topic tpc_6 –num-records 100000 –record-size 1024 –throughput -1 –producer-props bootstrap.servers&#x3D;node1:9092 acks&#x3D;1</p>
+<p><img src="/../kafka/wps23.jpg" alt="img"></p>
+<h1 id="Kafka-Java-API开发"><a href="#Kafka-Java-API开发" class="headerlink" title="Kafka Java API开发"></a>Kafka Java API开发</h1><p><strong>1、API开发：producer生产者</strong></p>
+<p><strong>生产者api示例</strong></p>
+<p>一个正常的生产逻辑需要以下几个步骤:</p>
+<p>（1）配置生产者客户端参数</p>
+<p>（2）创建相应的生产者实例</p>
+<p>（3）构建待发送的消息</p>
+<p>（4）发送消息</p>
+<p>（5）关闭生产者实例</p>
+<p>例如进行一个生产者开发实例演示，首先要引入maven依赖，如图：</p>
+<p><img src="/../kafka/wps24.jpg" alt="img"></p>
+<p><img src="/../kafka/wps25.jpg" alt="img"></p>
+<p>接着配置生产者的参数，在 Kafka 生产者客户端 KatkaProducer 中有 3 个参数是必填的。</p>
+<p>-bootstrap.servers </p>
+<p>-key.serializer </p>
+<p>-value.serializer，如图：</p>
+<p><img src="/../kafka/wps26.jpg" alt="img"></p>
+<p>然后创建相应的生产者实例以及构建待发送的消息，构建完成后发送消息：</p>
+<p><img src="/../kafka/wps27.jpg" alt="img"></p>
+<p>最后关闭生产者实例：</p>
+<p><img src="/../kafka/wps28.jpg" alt="img"></p>
+<p>在服务器上我们就可以查看接收到的消息：</p>
+<p><img src="/../kafka/wps29.jpg" alt="img"></p>
+<p>然后进入Kafka安装目录，执行bin&#x2F;kafka-console-consumer.sh –bootstrap-server node1:9092, node2:9092, node1:9092 –topic tpc_1 –from-beginning 即可查看：</p>
+<p><img src="/../kafka/wps30.jpg" alt="img"></p>
+<p>除此之外，我们还有ProducerCallbackDemo实例，其生产也需要遵循以下几个步骤，如图：</p>
+<p><img src="/../kafka/wps31.jpg" alt="img"></p>
+<p><img src="/../kafka/wps32.jpg" alt="img">	</p>
+<p>最终执行结果为：</p>
+<p><img src="/../kafka/wps33.jpg" alt="img">																													</p>
+<p><strong>2、API开发：consumer消费者</strong></p>
+<p><strong>消费者Api示例</strong></p>
+<p>一个正常的消费逻辑需要以下几个步骤：</p>
+<p>（1）配置消费者客户端参数</p>
+<p>（2）创建相应的消费者实例</p>
+<p>（3）订阅主题</p>
+<p>（4）拉取消息并消费</p>
+<p>（5）提交消费位移offset</p>
+<p>（6）关闭消费者实例</p>
+<p>消费者实例1：ConsumerDemo</p>
+<p><img src="/../kafka/wps34.jpg" alt="img"></p>
+<p><img src="/../kafka/wps35.jpg" alt="img"></p>
+<p><img src="/../kafka/wps36.jpg" alt="img"></p>
+<p>执行结果：</p>
+<p><img src="/../kafka/wps37.jpg" alt="img"></p>
+<p><img src="/../kafka/wps38.jpg" alt="img"></p>
+<p>消费者实例2：ConsumerDemo1，如图所示：</p>
+<p><img src="/../kafka/wps39.jpg" alt="img"></p>
+<p><img src="/../kafka/wps40.jpg" alt="img"></p>
+<p>执行结果：</p>
+<p><img src="/../kafka/wps41.jpg" alt="img"></p>
+<p>消费者实例3：ConsumerDemo2，如图所示：</p>
+<p><img src="/../kafka/wps42.jpg" alt="img"></p>
+<p><img src="/../kafka/wps43.jpg" alt="img"></p>
+<p><img src="/../kafka/wps44.jpg" alt="img"></p>
+<p>执行结果：</p>
+<p><img src="C:\Users\王雨晴\wyq.blog\source\kafka\wps45.jpg" alt="img"></p>
+<p>消费者实例4：ConsumerSeekOffset，如图所示：</p>
+<p><img src="/../kafka/wps46.jpg" alt="img"></p>
+<p><img src="/../kafka/wps47.jpg" alt="img"></p>
+<p>执行结果为：</p>
+<p><img src="/../kafka/wps48.jpg" alt="img"></p>
+<p><img src="/../kafka/wps49.jpg" alt="img"></p>
 
     </article>
     
     <div class="read-nums">
       <!-- id 将作为查询条件 -->
-      <span id="2023/06/18/Zookeeper/" class="leancloud_visitors" data-flag-title="Your Article Title">
+      <span id="2023/06/20/Kafka/" class="leancloud_visitors" data-flag-title="Your Article Title">
         <em class="post-meta-item-text">浏览量</em>
         <i class="leancloud-visitors-count"></i>
       </span>
@@ -431,20 +591,15 @@ pre:active {
     <div class="article-catelogue--wrapper">
       <div class="catelogue catelogue-1">
         <h3>目录</h3>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">1.准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%AE%89%E8%A3%85%E5%89%8D%E9%9C%80%E8%A6%81%E5%AE%89%E8%A3%85%E5%A5%BDjdk"><span class="toc-number">1.1.</span> <span class="toc-text">（1）安装前需要安装好jdk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E6%A3%80%E6%B5%8B%E9%9B%86%E7%BE%A4%E6%97%B6%E9%97%B4%E6%98%AF%E5%90%A6%E5%90%8C%E6%AD%A5"><span class="toc-number">1.2.</span> <span class="toc-text">（2）检测集群时间是否同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E6%A3%80%E6%B5%8B%E9%98%B2%E7%81%AB%E5%A2%99%E6%98%AF%E5%90%A6%E5%85%B3%E9%97%AD"><span class="toc-number">1.3.</span> <span class="toc-text">（3）检测防火墙是否关闭</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%884%EF%BC%89%E6%A3%80%E6%B5%8B%E4%B8%BB%E6%9C%BAip%E6%98%A0%E5%B0%84%E6%9C%89%E6%B2%A1%E6%9C%89%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">（4）检测主机ip映射有没有配置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%A7%A3%E5%8E%8B"><span class="toc-number">2.</span> <span class="toc-text">2.解压</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%B0%86zookeeper%E5%AE%89%E8%A3%85%E5%8C%85%E6%94%BE%E5%88%B0-x2F-export-x2F-software%E8%B7%AF%E5%BE%84%E4%B8%8B%EF%BC%8C%E8%A7%A3%E5%8E%8B%E5%88%B0-x2F-export-x2F-server"><span class="toc-number">2.1.</span> <span class="toc-text">（1）将zookeeper安装包放到&#x2F;export&#x2F;software路径下，解压到&#x2F;export&#x2F;server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%88%9B%E5%BB%BA%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-number">2.2.</span> <span class="toc-text">（2）创建软链接</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%BF%AE%E6%94%B9%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%88%E4%B8%89%E5%8F%B0%E9%83%BD%E9%9C%80%E8%A6%81%E6%94%B9%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">3.修改环境变量（三台都需要改）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E4%BF%AE%E6%94%B9zookeeper%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">4.修改zookeeper配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6zoo-sample-cfg%E5%B9%B6%E5%B0%86%E6%96%87%E4%BB%B6%E5%90%8D%E4%BF%AE%E6%94%B9%E4%B8%BAzoo-cfg"><span class="toc-number">4.1.</span> <span class="toc-text">（1）复制文件zoo_sample.cfg并将文件名修改为zoo.cfg</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%88%9B%E5%BB%BAzookeeper%E6%95%B0%E6%8D%AE%E5%AD%98%E6%94%BE%E7%9B%AE%E5%BD%95"><span class="toc-number">4.2.</span> <span class="toc-text">（2）创建zookeeper数据存放目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6zoo-cfg%E5%86%85%E5%AE%B9"><span class="toc-number">4.3.</span> <span class="toc-text">（3）修改文件zoo.cfg内容</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%B7%BB%E5%8A%A0myid%E9%85%8D%E7%BD%AE"><span class="toc-number">5.</span> <span class="toc-text">5.添加myid配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E7%BB%99node2%E3%80%81node3%E5%88%86%E5%8F%91%E5%AE%89%E8%A3%85%E5%8C%85%E5%B9%B6%E4%BF%AE%E6%94%B9myid%E7%9A%84%E5%80%BC"><span class="toc-number">6.</span> <span class="toc-text">6.给node2、node3分发安装包并修改myid的值</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%9C%A8node1%E4%B8%8A%EF%BC%8C%E5%B0%86%E5%AE%89%E8%A3%85%E5%8C%85%E5%88%86%E5%8F%91%E5%88%B0%E5%85%B6%E4%BB%96%E6%9C%BA%E5%99%A8"><span class="toc-number">6.1.</span> <span class="toc-text">（1）在node1上，将安装包分发到其他机器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%9C%A8node2%E4%B8%8A%E5%BB%BA%E7%AB%8B%E8%BD%AF%E8%BF%9E%E6%8E%A5-%E5%B9%B6%E4%BF%AE%E6%94%B9myid%E7%9A%84%E5%80%BC%E4%B8%BA2"><span class="toc-number">6.2.</span> <span class="toc-text">（2）在node2上建立软连接, 并修改myid的值为2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E5%9C%A8node3%E4%B8%8A%E5%BB%BA%E7%AB%8B%E8%BD%AF%E8%BF%9E%E6%8E%A5-%E5%B9%B6%E4%BF%AE%E6%94%B9myid%E7%9A%84%E5%80%BC%E4%B8%BA3"><span class="toc-number">6.3.</span> <span class="toc-text">（3）在node3上建立软连接, 并修改myid的值为3</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E4%B8%89%E5%8F%B0%E6%9C%BA%E5%99%A8%E5%90%AF%E5%8A%A8zookeeper%E6%9C%8D%E5%8A%A1"><span class="toc-number">7.</span> <span class="toc-text">7. 三台机器启动zookeeper服务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A"><span class="toc-number">7.1.</span> <span class="toc-text">方法一：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%B3%952%EF%BC%9A"><span class="toc-number">7.2.</span> <span class="toc-text">方法2：</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Kafka%E9%9B%86%E7%BE%A4"><span class="toc-number">1.</span> <span class="toc-text">安装Kafka集群</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Kafka%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">Kafka命令行操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Kafka-Java-API%E5%BC%80%E5%8F%91"><span class="toc-number">3.</span> <span class="toc-text">Kafka Java API开发</span></a></li></ol>
       </div>
       
         <div class="catelogue catelogue-2">
-          
-            <p>
-              <span>上一篇：</span>
-              <a href="/2023/06/19/flume/">flume</a>
-            </p>
            
           
             <p>
               <span>下一篇</span>
-              <a href="/2023/06/15/hive/">hive部署</a>
+              <a href="/2023/06/19/sqoop/">sqoop</a>
             </p>
           
         </div>
@@ -467,7 +622,7 @@ pre:active {
     recordIP: config.recordIP,
     visitor: config.visitor,
     enableQQ: config.enableQQ,
-    path: '2023/06/18/Zookeeper/'
+    path: '2023/06/20/Kafka/'
   })
 </script>
 
